@@ -25,10 +25,10 @@ export const productsSlice = createSlice({
   },
 });
 
-console.log('ProdictSLice')
-console.log(productsSlice)
+console.log("ProdictSLice");
+console.log(productsSlice);
 
-export const { setLoading, setProducts, setError} = productsSlice.actions
-export default productsSlice.reducer
+export const { setLoading, setProducts, setError } = productsSlice.actions;
+export default productsSlice.reducer;
 
 export const productSelector = (state) => state.products;
