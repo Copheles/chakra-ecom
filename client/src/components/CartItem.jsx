@@ -55,7 +55,6 @@ const CartItem = ({ cartItem }) => {
         >
           {[...Array(stock).keys()].map((x) => (
             <option key={x + 1} value={x + 1}>
-              {" "}
               {x + 1}
             </option>
           ))}

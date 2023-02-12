@@ -140,10 +140,10 @@ const ProductCard = ({ product }) => {
           {product.price.toFixed(2)}
         </Box>
         <Tooltip
-          label="Add to cart"
-          bg="white"
+          label={product.stock <= 0 ? 'Out of Stock': 'Add to cart'}
+          bg={product.stock <= 0 ? 'red.400': 'white'}
           placement="top"
-          color="gray.800"
+          color={product.stock <= 0 ? 'white': "gray.800"}
           fontSize="1.2em"
         >
           <Button
