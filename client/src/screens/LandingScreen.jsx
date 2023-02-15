@@ -8,8 +8,7 @@ import {
   Link,
   Skeleton,
   Stack,
-  useColorModeValue,
-  Text
+  useColorModeValue
 } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { Link as ReactLink} from 'react-router-dom'
@@ -35,7 +34,7 @@ export const LandingScreen = () => (
             </Heading>
           </Stack>
           <HStack spacing="3">
-            <Link color={useColorModeValue('orange.500', 'orange.200')} fontWeight="bold" fontSize={{ base: 'sm', md: 'lg'}}>
+            <Link as={ReactLink} to='/products' color={useColorModeValue('orange.500', 'orange.200')} fontWeight="bold" fontSize={{ base: 'sm', md: 'lg'}}>
               Discover now
             </Link>
             <Icon color={useColorModeValue('orange.500', 'orange.200')} as={FaArrowRight} />

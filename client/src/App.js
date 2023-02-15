@@ -4,8 +4,10 @@ import { Footer } from "./components/Footer";
 import Navbar from "./components/Navbar";
 import CartScreen from "./screens/CartScreen";
 import { LandingScreen } from "./screens/LandingScreen";
+import LoginScreen from "./screens/LoginScreen";
 import ProductScreen from "./screens/ProductScreen";
 import ProductsScreen from "./screens/ProductsScreen";
+import RegistrationScreen from "./screens/RegistrationScreen";
 import theme from "./theme";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
             <Route path="/cart" element={<CartScreen />}></Route>
             <Route path="/products" element={<ProductsScreen />}></Route>
             <Route path="/products/:id" element={<ProductScreen />}></Route>
+            <Route path='/login' element={<LoginScreen />}></Route>
+            <Route path='/registration' element={<RegistrationScreen />}></Route>
           </Routes>
         </main>
         <Footer/>
