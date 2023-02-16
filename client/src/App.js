@@ -9,6 +9,7 @@ import ProductScreen from "./screens/ProductScreen";
 import ProductsScreen from "./screens/ProductsScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
 import theme from "./theme";
+import ProfileScreen from './screens/ProfileScreen';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/products/:id" element={<ProductScreen />}></Route>
             <Route path='/login' element={<LoginScreen />}></Route>
             <Route path='/registration' element={<RegistrationScreen />}></Route>
+            <Route path='/profile' element={<ProfileScreen />}></Route>
           </Routes>
         </main>
         <Footer/>
