@@ -1,5 +1,14 @@
 import axios from "axios";
-import { resetUpdate, setError, setLoading, updateUserProfile, userLogin, userLogout } from "../slices/user";
+import {
+  resetUpdate,
+  setError,
+  setLoading,
+  updateUserProfile,
+  userLogin,
+  userLogout,
+  setUserOrders,
+} from "../slices/user";
+import { clearCart } from "../slices/cart";
 
 export const login = (email, password) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -17,15 +26,15 @@ export const login = (email, password) => async (dispatch) => {
       },
       config
     );
-    console.log(data)
+    console.log(data);
     dispatch(userLogin(data));
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
-    console.log(error.response)
+    console.log(error.response);
     dispatch(
       setError(
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message
           ? error.message
           : "An unexpected error has occured.Please try again later"
@@ -57,8 +66,8 @@ export const register = (name, email, password) => async (dispatch) => {
   } catch (error) {
     dispatch(
       setError(
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message
           ? error.message
           : "An unexpected error has occured.Please try again later"
@@ -69,6 +78,7 @@ export const register = (name, email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
+  dispatch(clearCart())
   dispatch(resetUpdate());
   dispatch(userLogout());
 };
@@ -98,8 +108,8 @@ export const updateProfile =
     } catch (error) {
       dispatch(
         setError(
-          error.response && error.response.data.message
-            ? error.response.data.message
+          error.response && error.response.data
+            ? error.response.data
             : error.message
             ? error.message
             : "An unexpected error has occured.Please try again later"
@@ -108,7 +118,34 @@ export const updateProfile =
     }
   };
 
-
-export const resetUpdateSuccess = () => async(dispatch) => {
+export const resetUpdateSuccess = () => async (dispatch) => {
   dispatch(resetUpdate());
-}
+};
+
+export const getUserOrders = () => async (dispatch, getState) => {
+  dispatch(setLoading(true));
+  const {
+    user: { userInfo },
+  } = getState();
+
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.get(`/api/users/${userInfo._id}`, config);
+    dispatch(setUserOrders(data));
+  } catch (error) {
+    dispatch(
+      setError(
+        error.response && error.response.data
+          ? error.response.data
+          : error.message
+          ? error.message
+          : "An unexpected error has occured. Please try again later."
+      )
+    );
+  }
+};

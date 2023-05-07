@@ -56,12 +56,12 @@ const productSchema = new mongoose.Schema({
   },
   numOfReviews: {
     type: Number,
-    required: true
-  },
-  brand: {
-    type: Number,
     required: true,
     default: 0
+  },
+  price: {
+    type: String,
+    required: true,
   },
   stock: {
     type: Number,

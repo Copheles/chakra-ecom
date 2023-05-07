@@ -36,10 +36,10 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     if (updateSuccess) {
-      toast({ description: 'Profile saved.', status: 'success', isClosable: true });
+      toast({ description: 'Profile saved.', status: 'success', isClosable: true, duration: 2000 });
       dispatch(resetUpdateSuccess());
     }
-  }, [toast, updateSuccess]);
+  }, [toast, updateSuccess, dispatch]);
 
   return userInfo ? (
     <Formik
@@ -55,8 +55,12 @@ const ProfileScreen = () => {
           .required('Password is required.')
           .oneOf([Yup.ref('password'), null], 'Passwords must match.'),
       })}
-      onSubmit={(values) => {
+      onSubmit={(values, { setFieldValue, setFieldTouched }) => {
         dispatch(updateProfile(userInfo._id, values.name, values.email, values.password));
+        setFieldValue('password', '')
+        setFieldTouched('password', false)
+        setFieldValue('confirmPassword', '')
+        setFieldTouched('confirmPassword', false)
       }}>
       {(formik) => (
         <Box
@@ -67,7 +71,7 @@ const ProfileScreen = () => {
           py={{ base: '6', md: '8', lg: '12' }}>
           <Stack spacing='10' direction={{ base: 'column', lg: 'row' }} align={{ lg: 'flex-start' }}>
             <Stack flex='1.5' mb={{ base: '2xl', md: 'none' }}>
-              <Heading fontSize='2xl' fontWeight='extrabold'>
+              <Heading fontSize='2xl' mb={3} fontWeight='extrabold'>
                 Profile
               </Heading>
               <Stack spacing='6'>

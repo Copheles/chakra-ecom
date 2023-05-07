@@ -137,7 +137,7 @@ const ProductCard = ({ product }) => {
           <Box as="span" color={`gray.600`} fontSize="xl">
             $
           </Box>
-          {product.price.toFixed(2)}
+          {Number(product.price).toFixed(2)}
         </Box>
         <Tooltip
           label={product.stock <= 0 ? 'Out of Stock': 'Add to cart'}

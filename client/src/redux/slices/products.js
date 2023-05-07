@@ -4,7 +4,10 @@ export const initialState = {
   loading: false,
   error: null,
   products: [],
-  product: null
+  product: null,
+  reviewSend: false,
+  productUpdate: false,
+  reviewRemoval: false,
 };
 
 export const productsSlice = createSlice({
@@ -28,13 +31,29 @@ export const productsSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    productReviewed: (state, action ) => {
+      state.loading = false;
+      state.error = null;
+      state.reviewSend = true
+    },
+    resetError: (state) => {
+      state.error = null;
+      state.reviewSend = false;
+      state.productUpdate = false
+    },
+    setProductUpdateFlag: (state) => {
+      state.productUpdate = true;
+      state.loading = false
+    },
+    setReviewRemovalFlag: (state) => {
+      state.error = null;
+      state.reviewRemoval = true;
+      state.loading = false;
+    },
   },
 });
 
-console.log("ProdictSLice");
-console.log(productsSlice);
-
-export const { setLoading, setProducts, setError, setProduct } = productsSlice.actions;
+export const { setLoading, setProducts, setError, setProduct, productReviewed, resetError, setProductUpdateFlag, setReviewRemovalFlag } = productsSlice.actions;
 export default productsSlice.reducer;
 
 export const productSelector = (state) => state.products;

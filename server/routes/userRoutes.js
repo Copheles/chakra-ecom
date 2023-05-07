@@ -2,7 +2,10 @@ import express from "express";
 import User from "../models/User.js";
 import asyncHandler from 'express-async-handler'
 import jwt from 'jsonwebtoken'
-import protectedRoute from '../middleware/authMiddleware.js';
+import {
+  protectedRoute, admin
+} from '../middleware/authMiddleware.js';
+import Order from '../models/Order.js';
 
 const userRoutes = express.Router();
 
@@ -35,8 +38,7 @@ const loginUser = asyncHandler(async (req, res) => {
     })
   } else {
     console.log('not match')
-    res.status(401)
-    throw new Error('Invalid email or password')
+    res.status(401).json('Invalid email or password')
   }
 })
 
@@ -52,8 +54,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (userExists) {
-    res.status(400);
-    throw new Error('We already have an account with that email.')
+    res.status(400).json('We already have an account with that email.');
   }
 
   const user = await User.create({
@@ -71,8 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
       token: genToken(user._id)
     })
   } else {
-    res.json(400)
-    throw new Error('Invalid user data')
+    res.json(400).json('Invalid user data')
   }
 })
 
@@ -103,8 +103,39 @@ const updateUserProifle = asyncHandler(async (req, res) => {
   }
 })
 
+const getUserOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({
+    user: req.params.id
+  }).sort('-createdAt');
+  if (orders) {
+    res.json(orders);
+  } else {
+    res.status(404);
+    throw new Error('No Orders found');
+  }
+});
+
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    res.json(user);
+  } catch (error) {
+    res.status(404);
+    throw new Error('This user could not be found.');
+  }
+});
+
+
 userRoutes.route('/login').post(loginUser);
 userRoutes.route('/register').post(registerUser)
 userRoutes.route('/profile/:id').put(protectedRoute, updateUserProifle)
+userRoutes.route('/:id').get(protectedRoute, getUserOrders);
+userRoutes.route('/').get(protectedRoute, admin, getUsers);
+userRoutes.route('/:id').delete(protectedRoute, admin, deleteUser);
 
 export default userRoutes
